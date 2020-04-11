@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="my-project" default="full-build">
+<project name="my-project" default="info">
 
     <property name="basedir" value="${project.basedir}"/>
+    <property name="devtools.configdir" value="${project.basedir}" />
 
     <!-- By default, we assume all tools to be on the $PATH
     <property name="pdepend" value="pdepend"/>
@@ -23,14 +24,21 @@
     <property name="phpunit" value="${basedir}/build/tools/phpunit.phar"/> -->
 
     <!-- Use this when the tools are managed by Composer in ${basedir}/vendor/bin  -->
-    <property name="pdepend" value="/vendor/bin/pdepend"/>
-    <property name="phpcpd"  value="/vendor/bin/phpcpd"/>
-    <property name="phpcs"   value="/vendor/bin/phpcs"/>
-    <property name="phpcbf"   value="/vendor/bin/phpcbf"/>
-    <property name="phpdox"  value="/vendor/bin/phpdox"/>
-    <property name="phploc"  value="/vendor/bin/phploc"/>
-    <property name="phpmd"   value="/vendor/bin/phpmd"/>
-    <property name="phpunit" value="/vendor/bin/phpunit"/>
+    <property name="pdepend" value="${basedir}/vendor/bin/pdepend"/>
+    <property name="phpcpd"  value="${basedir}/vendor/bin/phpcpd"/>
+    <property name="phpcs"   value="${basedir}/vendor/bin/phpcs"/>
+    <property name="phpcbf"  value="${basedir}/vendor/bin/phpcbf"/>
+    <property name="phpdox"  value="${basedir}/vendor/bin/phpdox"/>
+    <property name="phploc"  value="${basedir}/vendor/bin/phploc"/>
+    <property name="phpmd"   value="${basedir}/vendor/bin/phpmd"/>
+    <property name="phpunit" value="${basedir}/vendor/bin/phpunit"/>
+
+    <target name="info" description="Shows build description">
+        <echo>project.name: ${project.name}</echo>
+        <echo>project.basedir: ${project.basedir}</echo>
+        <echo>devtools.configdir: ${devtools.configdir}</echo>
+        <echo>basedir: ${basedir}</echo>
+    </target>
 
     <target name="full-build"
             depends="prepare,static-analysis,phpunit,phpdox,-check-failure"
@@ -104,11 +112,6 @@
             <fileset dir="${basedir}/tests">
                 <include name="**/*.php" />
             </fileset>
-
-            <fileset dir="${basedir}/plugins">
-                <include name="**/*.php" />
-            </fileset>
-
         </apply>
 
         <property name="lint.done" value="true"/>
@@ -122,8 +125,6 @@
             <arg value="--count-tests" />
             <arg path="${basedir}/src/*" />
             <arg path="${basedir}/tests/*" />
-            <arg path="${basedir}/plugins/*/src/*" />
-            <arg path="${basedir}/plugins/*/tests/*" />
         </exec>
 
         <property name="phploc.done" value="true"/>
@@ -141,8 +142,6 @@
             <arg path="${basedir}/build/logs/phploc.xml" />
             <arg path="${basedir}/src/*" />
             <arg path="${basedir}/tests/*" />
-            <arg path="${basedir}/plugins/*/src/*" />
-            <arg path="${basedir}/plugins/*/tests/*" />
         </exec>
 
         <property name="phploc.done" value="true"/>
@@ -159,9 +158,9 @@
             <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
             <arg value="--dependency-xml=${basedir}/build/pdepend/dependencies.xml" />
             <arg value="--summary-xml=${basedir}/build/pdepend/summary.xml" />
-            <arg value="--ignore=${basedir}/tests,${basedir}/plugins/*/tests" />
-            <arg value="--configuration=${basedir}/pdepend.xml" />
-            <arg path="${basedir}/src,${basedir}/plugins" />
+            <arg value="--ignore=${basedir}/tests" />
+            <arg value="--configuration=${devtools.configdir}/pdepend.xml" />
+            <arg path="${basedir}/src" />
         </exec>
 
         <property name="pdepend.done" value="true"/>
@@ -172,12 +171,9 @@
             unless="phpmd.done"
             description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="${phpmd}" logoutput="true">
-            <arg path="${basedir}/src,${basedir}/plugins" />
+            <arg path="${basedir}/src" />
             <arg value="text" />
-            <arg path="/configs/phpmd.xml" />
-
-            <arg value="exclude" />
-            <arg value="${basedir}/plugins/*/tests" />
+            <arg path="${devtools.configdir}/phpmd.xml" />
         </exec>
 
         <property name="phpmd.done" value="true"/>
@@ -188,14 +184,11 @@
             depends="prepare"
             description="Perform project mess detection using PHPMD and log result in XML format. Intended for usage within a continuous integration environment.">
         <exec executable="${phpmd}" logoutput="true">
-            <arg value="${basedir}/src,${basedir}/plugins" />
+            <arg value="${basedir}/src" />
             <arg value="xml" />
-            <arg path="/configs/phpmd.xml" />
+            <arg path="${devtools.configdir}/phpmd.xml" />
             <arg value="--reportfile" />
             <arg path="${basedir}/build/logs/pmd.xml" />
-
-            <arg value="exclude" />
-            <arg value="${basedir}/plugins/*/tests" />
         </exec>
 
         <property name="phpmd.done" value="true"/>
@@ -218,7 +211,6 @@
             <!--
             <arg path="${basedir}/tests/*" />
             -->
-            <arg path="${basedir}/plugins/*/src/*" />
         </exec>
 
         <property name="phpcs.done" value="true"/>
@@ -238,11 +230,11 @@
             <arg value="--report-diff=${basedir}/build/logs/checkstyle.diff" />
             <arg value="--standard=CakePHP" />
             <arg value="--extensions=php" />
-            <arg value="--ignore=autoload.php,*.bak.php,*/webroot/*" />
+            <arg value="--ignore=autoload.php,*.bak.php,*/config/*,*/vendor/*,*/webroot/*" />
             <!-- <arg value="-v" /> -->
             <arg path="${basedir}/src/*" />
-            <arg path="${basedir}/plugins/*/src/*" />
             <!--
+            <arg path="${basedir}/plugins/*" />
             <arg path="${basedir}/tests/*" />
             -->
         </exec>
@@ -262,11 +254,11 @@
             <arg value="-n" /> <!-- only errors -->
             <arg value="--standard=CakePHP" />
             <arg value="--extensions=php" />
-            <arg value="--ignore=autoload.php,*/config/*,*/vendor/*" />
+            <arg value="--ignore=autoload.php,*.bak.php,*/config/*,*/vendor/*,*/webroot/*" />
             <!-- <arg value="-v" /> -->
             <arg path="${basedir}/src/*" />
-            <arg path="${basedir}/plugins/*" />
             <!--
+            <arg path="${basedir}/plugins/*" />
             <arg path="${basedir}/tests/*" />
             <arg path="${basedir}/plugins/*/src/*" />
             -->
@@ -281,7 +273,6 @@
             description="Find duplicate code using PHPCPD and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="${phpcpd}" logoutput="true">
             <arg path="${basedir}/src/*" />
-            <arg path="${basedir}/plugins/*" />
         </exec>
 
         <property name="phpcpd.done" value="true"/>
@@ -293,9 +284,7 @@
             description="Find duplicate code using PHPCPD and log result in XML format. Intended for usage within a continuous integration environment.">
         <exec executable="${phpcpd}" logoutput="true">
             <arg value="--log-pmd=${basedir}/build/logs/pmd-cpd.xml" />
-            <arg value="--exclude=${basedir}/plugins/*/tests" />
             <arg path="${basedir}/src/*" />
-            <arg path="${basedir}/plugins/*" />
         </exec>
 
         <property name="phpcpd.done" value="true"/>
@@ -309,7 +298,19 @@
         <echo message="Run unit tests" />
         <exec executable="${phpunit}" logoutput="true" returnProperty="phpunit.result">
             <arg value="--configuration"/>
-            <arg path="/configs/phpunit.xml"/>
+            <arg path="${basedir}/phpunit.xml"/>
+            <arg value="--coverage-clover"/>
+            <arg path="${basedir}/build/logs/clover.xml"/>
+            <arg value="--coverage-crap4j"/>
+            <arg path="${basedir}/build/logs/crap4j.xml"/>
+            <arg value="--coverage-html"/>
+            <arg path="${basedir}/build/coverage"/>
+            <arg value="--coverage-php"/>
+            <arg path="${basedir}/build/logs/phpunit.serialized"/>
+            <arg value="--coverage-text=${basedir}/build/logs/phpunit.txt"/>
+            <arg value="--log-junit"/>
+            <arg path="${basedir}/build/logs/junit.xml"/>
+            <arg value="--do-not-cache-result"/>
         </exec>
     </target>
 
@@ -320,7 +321,7 @@
         <exec executable="${phpunit}" logoutput="true" returnProperty="phpunit.result">
             <arg value="--no-cover"/>
             <arg value="--configuration"/>
-            <arg path="/configs/phpunit.xml"/>
+            <arg path="${basedir}/phpunit.xml"/>
         </exec>
     </target>
 
@@ -331,7 +332,7 @@
 
         <exec executable="${phpdox}" dir="${basedir}/build" logoutput="true">
             <arg value="--file"/>
-            <arg path="/configs/phpdox.xml"/>
+            <arg path="${devtools.configdir}/phpdox.xml"/>
         </exec>
 
     </target>
