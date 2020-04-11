@@ -3,7 +3,7 @@
     "description": "CakePHP developer tools",
     "homepage": "http://github.com/fm-labs/cakephp-devtools",
     "type": "project",
-    "license": "See LICENSE file",
+    "license": "MIT",
     "require": {
         "php": ">=7.2",
         "cakephp/cakephp": "^4.0",
