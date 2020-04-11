@@ -343,6 +343,7 @@
             unless="phpstan.done"
             description="Analyse code using PHPSTAN and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="${phpstan}" logoutput="true">
+            <arg value="analyze" />
             <arg path="${basedir}/src/" />
             <arg path="${basedir}/tests/" />
         </exec>
@@ -353,7 +354,8 @@
     <target name="phpstan-ci"
             unless="phpstan.done"
             description="Analyse code using PHPSTAN and print human readable output. Intended for usage within a continuous integration environment..">
-        <exec executable="${phpstan}" logoutput="true">
+        <exec executable="${phpstan}" logoutput="true" output="${basedir}/build/logs/phpstan.xml">
+            <arg value="analyze" />
             <arg value="--no-progress" />
             <arg value="--error-format=checkstyle" />
             <arg path="${basedir}/src/" />
