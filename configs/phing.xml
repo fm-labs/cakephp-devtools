@@ -332,7 +332,7 @@
 
         <exec executable="${phpdox}" dir="${basedir}/build" logoutput="true">
             <arg value="--file"/>
-            <arg path="${devtools.configdir}/phpdox.xml"/>
+            <arg path="${basedir}/phpdox.xml"/>
         </exec>
 
     </target>

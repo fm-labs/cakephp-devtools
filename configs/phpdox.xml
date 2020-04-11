@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <phpdox xmlns="http://xml.phpdox.net/config" silent="false">
-    <project name="My Project" source="${basedir}/src" workdir="${basedir}/build/api/xml">
+    <project name="My Project" source="${basedir}/src" workdir="${basedir}/build/phpdox/xml">
         <collector backend="parser" publiconly="false">
             <include mask="*.php" />
         </collector>
-        <generator output="${basedir}/build/api">
+        <generator output="${basedir}/build/phpdox">
             <!--
         <enrich base="${basedir}/build/logs">
             <source type="build" />
