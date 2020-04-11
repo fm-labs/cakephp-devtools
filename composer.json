@@ -35,6 +35,7 @@
     "scripts": {
         "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump"
     },
+    "bin": ["bin/cakedev"],
     "config": {
         "sort-packages": true
     },
