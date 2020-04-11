@@ -32,6 +32,7 @@
     <property name="phploc"  value="${basedir}/vendor/bin/phploc"/>
     <property name="phpmd"   value="${basedir}/vendor/bin/phpmd"/>
     <property name="phpunit" value="${basedir}/vendor/bin/phpunit"/>
+    <property name="phpstan" value="${basedir}/vendor/bin/phpstan"/>
 
     <target name="info" description="Shows build description">
         <echo>project.name: ${project.name}</echo>
@@ -57,7 +58,7 @@
             description="Runs the tests (without generating code coverage reports)"/>
 
     <target name="static-analysis"
-            depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci"
+            depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci,phpstan-ci"
             description="Performs static analysis" />
 
     <!-- Adjust the threadCount attribute's value to the number of CPUs -->
@@ -306,7 +307,7 @@
             <arg value="--coverage-html"/>
             <arg path="${basedir}/build/coverage"/>
             <arg value="--coverage-php"/>
-            <arg path="${basedir}/build/logs/phpunit.serialized"/>
+            <arg path="${basedir}/build/logs/phpunit.php"/>
             <arg value="--coverage-text=${basedir}/build/logs/phpunit.txt"/>
             <arg value="--log-junit"/>
             <arg path="${basedir}/build/logs/junit.xml"/>
@@ -337,6 +338,30 @@
 
     </target>
 
+    <!-- PHP STAN -->
+    <target name="phpstan"
+            unless="phpstan.done"
+            description="Analyse code using PHPSTAN and print human readable output. Intended for usage on the command line before committing.">
+        <exec executable="${phpstan}" logoutput="true">
+            <arg path="${basedir}/src/" />
+            <arg path="${basedir}/tests/" />
+        </exec>
+
+        <property name="phpstan.done" value="true"/>
+    </target>
+
+    <target name="phpstan-ci"
+            unless="phpstan.done"
+            description="Analyse code using PHPSTAN and print human readable output. Intended for usage within a continuous integration environment..">
+        <exec executable="${phpstan}" logoutput="true">
+            <arg value="--no-progress" />
+            <arg value="--error-format=checkstyle" />
+            <arg path="${basedir}/src/" />
+            <arg path="${basedir}/tests/" />
+        </exec>
+
+        <property name="phpstan.done" value="true"/>
+    </target>
 
     <!-- CHECK -->
     <target name="-check-failure">
