@@ -298,12 +298,16 @@
 
         <echo message="Run unit tests" />
         <exec executable="${phpunit}" logoutput="true" returnProperty="phpunit.result">
+            <arg value="--configuration"/>
+            <arg path="${basedir}/phpunit.xml"/>
             <arg value="--coverage-clover"/>
             <arg path="${basedir}/build/logs/clover.xml"/>
             <arg value="--coverage-crap4j"/>
             <arg path="${basedir}/build/logs/crap4j.xml"/>
             <arg value="--coverage-html"/>
-            <arg path="${basedir}/build/coverage"/>
+            <arg path="${basedir}/build/coverage/html"/>
+            <arg value="--coverage-xml"/>
+            <arg path="${basedir}/build/coverage/xml"/>
             <arg value="--coverage-php"/>
             <arg path="${basedir}/build/logs/phpunit.php"/>
             <arg value="--coverage-text=${basedir}/build/logs/phpunit.txt"/>
@@ -319,6 +323,8 @@
 
         <exec executable="${phpunit}" logoutput="true" returnProperty="phpunit.result">
             <arg value="--no-cover"/>
+            <arg value="--configuration"/>
+            <arg path="${basedir}/phpunit.xml"/>
         </exec>
     </target>
 
