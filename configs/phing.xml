@@ -298,8 +298,6 @@
 
         <echo message="Run unit tests" />
         <exec executable="${phpunit}" logoutput="true" returnProperty="phpunit.result">
-            <arg value="--configuration"/>
-            <arg path="${basedir}/phpunit.xml"/>
             <arg value="--coverage-clover"/>
             <arg path="${basedir}/build/logs/clover.xml"/>
             <arg value="--coverage-crap4j"/>
@@ -321,8 +319,6 @@
 
         <exec executable="${phpunit}" logoutput="true" returnProperty="phpunit.result">
             <arg value="--no-cover"/>
-            <arg value="--configuration"/>
-            <arg path="${basedir}/phpunit.xml"/>
         </exec>
     </target>
 
