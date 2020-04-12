@@ -4,7 +4,7 @@ PWD=$(pwd)
 
 trap "{ cd $PWD ; exit 255; }" SIGINT SIGTERM EXIT
 
-CMD=$1
+TARGET=$1
 WD=$2
 
 if [[ -z $WD ]]; then
@@ -24,83 +24,89 @@ fi
 
 cd ${WD} #|| echo "Failed to enter working directory" && exit 1
 
-case "${CMD}" in
+case "${TARGET}" in
+  "list")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} -list
+  ;;
+
   # Helper commands
   "info")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   "clean")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   "prepare")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
 
   # Tool commands
   "phpunit")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   "phpunit-no-coverage")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   "phpdox")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   "pdepend")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   "lint")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   "phploc")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   "phploc-ci")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   "phpmd")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   "phpmd-ci")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   "phpcs")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   "phpcs-ci")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   "phpcbf")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   "phpcpd")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   "phpcpd-ci")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   "phpstan")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   "phpstan-ci")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
 
   # Wrapper commands
   "full-build")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   "quick-build")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   "quick-test")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   "static-analysis")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
   ;;
   *)
-    echo "Usage: $0 [CMD] [WORKING-DIR]"
+    echo "Usage: $0 [TARGET] [WORKING-DIR]"
+    echo "Available phing targets:"
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} -list
     exit 1
   ;;
 esac
