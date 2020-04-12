@@ -340,7 +340,7 @@
         <exec executable="${phpdox}" dir="${basedir}/build" logoutput="true">
             <arg value="--file"/>
             <arg path="${basedir}/phpdox.xml"/>
-        </exec>f
+        </exec>
     </target>
 
     <!-- PHP STAN -->
