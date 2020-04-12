@@ -43,6 +43,11 @@ The goal is to have a reusabe build-environment for CakePHP applications and Cak
 Under the hood all build targets will be executed using `phing` .
 The phing configuration file is located at `configs/phing.xml` .
 
+```
+ // Phing command
+ $ ./vendor/bin/phing -Dbasedir=$(pwd) -f ./vendor/fm-labs/cakephp-devtools/configs/phing.xml [BUILD-TARGET]
+```
+
 ### Build Targets
 
 A build target is an alias for series of build steps.
