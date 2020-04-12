@@ -12,8 +12,15 @@ if [[ -z $WD ]]; then
   echo "WD not defined. Fallback to $PWD"
 fi
 
-PHING=${WD}/vendor/bin/phing
-PHINGFILE=${WD}/vendor/fm-labs/cakephp-devtools/configs/phing.xml
+if [[ -z $PHING ]]; then
+  PHING=${WD}/vendor/bin/phing
+  echo "PHING not defined. Fallback to $PHING"
+fi
+
+if [[ -z $PHINGFILE ]]; then
+  PHINGFILE=${WD}/vendor/fm-labs/cakephp-devtools/configs/phing.xml
+  echo "PHINGFILE not defined. Fallback to $PHINGFILE"
+fi
 
 cd ${WD} #|| echo "Failed to enter working directory" && exit 1
 
