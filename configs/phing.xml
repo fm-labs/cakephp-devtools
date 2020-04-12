@@ -340,7 +340,7 @@
         <exec executable="${phpdox}" dir="${basedir}/build" logoutput="true">
             <arg value="--file"/>
             <arg path="${basedir}/phpdox.xml"/>
-        </exec>
+        </exec>f
     </target>
 
     <!-- PHP STAN -->
@@ -358,7 +358,7 @@
 
     <target name="phpstan-ci"
             unless="phpstan.done"
-            description="Analyse code using PHPSTAN and print human readable output. Intended for usage within a continuous integration environment..">
+            description="Analyse code using PHPSTAN and and log result in XML format. Intended for usage within a continuous integration environment.">
         <exec executable="${phpstan}" logoutput="true" output="${basedir}/build/logs/phpstan.xml">
             <arg value="analyze" />
             <arg value="--no-progress" />
