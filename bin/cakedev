@@ -1,34 +1,100 @@
 #!/usr/bin/env bash
 
 PWD=$(pwd)
-CMD=$1
-WD=$2
-PHING=./vendor/bin/phing
 
 trap "{ cd $PWD ; exit 255; }" SIGINT SIGTERM EXIT
+
+CMD=$1
+WD=$2
 
 if [[ -z $WD ]]; then
   WD=$PWD
   echo "WD not defined. Fallback to $PWD"
 fi
 
+PHING=${WD}/vendor/bin/phing
+PHINGFILE=${WD}/vendor/fm-labs/cakephp-devtools/configs/phing.xml
+
 cd ${WD} #|| echo "Failed to enter working directory" && exit 1
 
-$PHING -Dbasedir=${WD} -f ${WD}/vendor/fm-labs/cakephp-devtools/configs/phing.xml ${CMD}
+case "${CMD}" in
+  # Helper commands
+  "info")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  "clean")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  "prepare")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
 
-#case $CMD in
-#  "phpunit")
-#    $PHING -Dbasedir=$WD -f ./vendor/fm-labs/cakephp-devtools/configs/phing.xml phpunit
-#  ;;
-#
-#  "lint")
-#    $PHING -Dbasedir=$WD -f ./vendor/fm-labs/cakephp-devtools/configs/phing.xml lint
-#  ;;
-#
-#  *)
-#  echo "Usage: $0 [CMD] [WORKING-DIR]"
-#  exit 1
-#  ;;
-#esac
+  # Tool commands
+  "phpunit")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  "phpunit-no-coverage")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  "phpdox")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  "pdepend")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  "lint")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  "phploc")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  "phploc-ci")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  "phpmd")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  "phpmd-ci")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  "phpcs")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  "phpcs-ci")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  "phpcbf")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  "phpcpd")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  "phpcpd-ci")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  "phpstan")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  "phpstan-ci")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
 
-exit 0
+  # Wrapper commands
+  "full-build")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  "quick-build")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  "quick-test")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  "static-analysis")
+    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${CMD}
+  ;;
+  *)
+    echo "Usage: $0 [CMD] [WORKING-DIR]"
+    exit 1
+  ;;
+esac
+
