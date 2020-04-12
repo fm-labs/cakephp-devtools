@@ -4,6 +4,8 @@
     <property name="basedir" value="${project.basedir}"/>
     <property name="devtools.configdir" value="${project.basedir}" />
 
+    <property name="args.phpunit" value="${env.PHPUNIT_ARGS}" />
+
     <!-- By default, we assume all tools to be on the $PATH
     <property name="pdepend" value="pdepend"/>
     <property name="phpcpd"  value="phpcpd"/>
@@ -314,6 +316,7 @@
             <arg value="--log-junit"/>
             <arg path="${basedir}/build/logs/junit.xml"/>
             <arg value="--do-not-cache-result"/>
+            <arg line="${args.phpunit}" />
         </exec>
     </target>
 
@@ -325,6 +328,7 @@
             <arg value="--no-cover"/>
             <arg value="--configuration"/>
             <arg path="${basedir}/phpunit.xml"/>
+            <arg line="${args.phpunit}" />
         </exec>
     </target>
 
@@ -337,7 +341,6 @@
             <arg value="--file"/>
             <arg path="${basedir}/phpdox.xml"/>
         </exec>
-
     </target>
 
     <!-- PHP STAN -->
