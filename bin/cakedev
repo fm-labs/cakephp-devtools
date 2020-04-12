@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 PWD=$(pwd)
+export PHPUNIT_ARGS="${PHPUNIT_ARGS:=}" # Workaround for 'sh: Bad Substituion'-Bug when executing phing
 
-trap "{ cd $PWD ; exit 255; }" SIGINT SIGTERM EXIT
+trap "{ cd $PWD ; unset PHPUNIT_ARGS ; exit 255; }" SIGINT SIGTERM EXIT
 
 TARGET=$1
 WD=$2
