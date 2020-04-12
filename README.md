@@ -15,7 +15,10 @@ The goal is to have a reusabe build-environment for CakePHP applications and Cak
 
 ```
  # In your CakePHP project directory
- $ composer require --dev fm-labs/cakephp-devtools
+
+ composer config minimum-stability dev
+ composer config prefer-stable 1
+ composer require --dev fm-labs/cakephp-devtools
 ```
 
 ## Usage
