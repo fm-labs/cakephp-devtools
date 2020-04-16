@@ -109,6 +109,19 @@ Example shell build step to prepare the build environment.
 ```shell
 #!/bin/bash
 
+# Github pubkey authentication for checking out private repos
+# Before use:
+# * Generate SSH-Keypair (store eg. in /var/lib/jenkins/.ssh/jenkins)
+# * Register public key in your Github-Account
+# More Information:
+# https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh
+# https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+#
+# Start the ssh-agent in the background.
+#eval "$(ssh-agent -s)"
+# Add your SSH private key to ssh-agent
+#ssh-add /var/lib/jenkins/.ssh/jenkins
+
 # Load devtools on-the-fly via composer
 # (not necessary if devtools are already defined in composer.json as a dependency)
 #composer config minimum-stability dev
@@ -156,3 +169,25 @@ Add Jenkins build step 'Invoke phing targets' and use following configuration:
 * Options: 
 * Properties: basedir=$WORKSPACE
 * Use ModuleRoot as working directory: yes
+
+### Post-Build Actions
+
+[ TODO ]
+
+# Acknowledgements
+
+This project has been inspired by and built on-top of [jenkins-php.org](https://jenkins-php.org).
+
+---
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+---
+
+Copyright (c) 2020 fm-labs
+
+[LICENSE](LICENSE)
