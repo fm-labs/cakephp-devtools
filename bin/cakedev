@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 
 PWD=$(pwd)
-export PHPUNIT_ARGS="${PHPUNIT_ARGS:=}" # Workaround for 'sh: Bad Substituion'-Bug when executing phing
 
 trap "{ cd $PWD ; unset PHPUNIT_ARGS ; exit 255; }" SIGINT SIGTERM EXIT
 
 TARGET=$1
 WD=$2
 
-if [[ -z $WD ]]; then
+if [[ -z ${WD} ]]; then
   WD=$PWD
   echo "WD not defined. Fallback to $PWD"
 fi
@@ -27,87 +26,87 @@ cd ${WD} #|| echo "Failed to enter working directory" && exit 1
 
 case "${TARGET}" in
   "list")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} -list
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} -list
   ;;
 
   # Helper commands
   "info")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   "clean")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   "prepare")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
 
   # Tool commands
   "phpunit")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   "phpunit-no-coverage")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   "phpdox")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   "pdepend")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   "lint")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   "phploc")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   "phploc-ci")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   "phpmd")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   "phpmd-ci")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   "phpcs")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   "phpcs-ci")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   "phpcbf")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   "phpcpd")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   "phpcpd-ci")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   "phpstan")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   "phpstan-ci")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
 
   # Wrapper commands
   "full-build")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   "quick-build")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   "quick-test")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   "static-analysis")
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
   ;;
   *)
     echo "Usage: $0 [TARGET] [WORKING-DIR]"
     echo "Available phing targets:"
-    $PHING -Dbasedir=$WD -f ${PHINGFILE} -list
+    $PHING -Dbasedir=${WD} -f ${PHINGFILE} -list
     exit 1
   ;;
 esac
