@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-CakeDev Tools Phing configuration v1.1.0
+CakeDevTools standard Phing configuration file.
 -->
 <project name="project" default="info">
     <!-- property env: Load environment values -->
@@ -31,7 +31,7 @@ CakeDev Tools Phing configuration v1.1.0
     <property name="phpdox.configuration" value="${basedir}/phpdox.xml.dist" />
 
     <!-- Properties from file (optional) -->
-    <property file="${basedir}/build.properties" quiet="true" override="true" />
+    <property file="${basedir}/build.properties" override="true" />
 
     <!-- INFO -->
     <target name="info" description="Shows build description">
