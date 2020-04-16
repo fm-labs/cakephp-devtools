@@ -3,8 +3,6 @@
 CakeDevTools standard Phing configuration file.
 -->
 <project name="project" default="info">
-    <!-- env: Load environment values -->
-    <property environment="env" />
     <!-- basedir: Base dir. MUST point to the project root directory. Defaults to ${project.basedir} -->
     <property name="basedir" value="${project.basedir}"/>
     <!-- devtools.configdir: Internal config location -->
@@ -22,7 +20,7 @@ CakeDevTools standard Phing configuration file.
     <property name="phpstan.bin" value="${basedir}/vendor/bin/phpstan"/>
 
     <!-- phpunit.args: Additional command line arguments for phpunit -->
-    <property name="phpunit.args" value="${env.PHPUNIT_ARGS}" />
+    <property name="phpunit.args" value="" />
     <!-- phpunit.configuration: Path to phpunit configuration file. Defaults to config in basedir. -->
     <property name="phpunit.configuration" value="${basedir}/phpunit.xml.dist" />
     <!-- phpdox.configuration: Path to phpdox configuration file. Defaults to config in basedir. -->
@@ -33,13 +31,33 @@ CakeDevTools standard Phing configuration file.
     <property name="pdepend.configuration" value="${devtools.configdir}/pdepend.xml" />
     <!-- phpstan.level: PHPStan analyze level -->
     <property name="phpstan.level" value="6" />
-    
+    <!-- Log file location properties -->
+    <property name="phpunit.log.coverage-html-dir"  value="${basedir}/build/coverage/html" />
+    <property name="phpunit.log.coverage-xml-dir"   value="${basedir}/build/coverage/xml" />
+    <property name="phpunit.log.coverage-php"       value="${basedir}/build/logs/phpunit.php" />
+    <property name="phpunit.log.coverage-text"      value="${basedir}/build/logs/phpunit.txt" />
+    <property name="phpunit.log.coverage-clover"    value="${basedir}/build/logs/clover.xml" />
+    <property name="phpunit.log.coverage-crap4j"    value="${basedir}/build/logs/crap4j.xml" />
+    <property name="phpunit.log.junit"              value="${basedir}/build/logs/junit.xml" />
+    <property name="phploc.log.csv"                 value="${basedir}/build/logs/phploc.csv" />
+    <property name="phploc.log.xml"                 value="${basedir}/build/logs/phploc.xml" />
+    <property name="phpcs.log.report-checkstyle"    value="${basedir}/build/logs/checkstyle.xml" />
+    <property name="phpcs.log.report-diff"          value="${basedir}/build/logs/checkstyle.diff" />
+    <property name="phpmd.log.report-xml"           value="${basedir}/build/logs/pmd.xml" />
+    <property name="phpcpd.log.pmd-xml"             value="${basedir}/build/logs/pmd-cpd.xml" />
+    <property name="phpstan.log.xml"                value="${basedir}/build/logs/phpstan.xml" />
+    <property name="pdepend.log.jdepend-xml"        value="${basedir}/build/logs/jdepend.xml" />
+    <property name="pdepend.log.jdepend-chart-svg"  value="${basedir}/build/pdepend/dependencies.svg" />
+    <property name="pdepend.log.pyramid-svg"        value="${basedir}/build/pdepend/overview-pyramid.svg" />
+    <property name="pdepend.log.dependency-xml"     value="${basedir}/build/pdepend/dependencies.xml" />
+    <property name="pdepend.log.summary-xml"        value="${basedir}/build/pdepend/summary.xml" />
+
     <!-- Load/Override properties from file -->
     <property file="${basedir}/build.properties" override="true" />
 
     <!-- INFO -->
     <target name="info" description="Shows build description">
-        <echo>project.name: ${project.name}</echo>
+        <echo>project.name: ${phing.project.name}</echo>
         <echo>project.basedir: ${project.basedir}</echo>
         <echo>devtools.configdir: ${devtools.configdir}</echo>
         <echo>basedir: ${basedir}</echo>
@@ -143,9 +161,9 @@ CakeDevTools standard Phing configuration file.
         <exec executable="${phploc.bin}" logoutput="true">
             <arg value="--count-tests" />
             <arg value="--log-csv" />
-            <arg path="${basedir}/build/logs/phploc.csv" />
+            <arg path="${phploc.log.csv}" />
             <arg value="--log-xml" />
-            <arg path="${basedir}/build/logs/phploc.xml" />
+            <arg path="${phploc.log.xml}" />
             <arg path="${basedir}/src/*" />
             <arg path="${basedir}/tests/*" />
         </exec>
@@ -159,11 +177,11 @@ CakeDevTools standard Phing configuration file.
             depends="prepare"
             description="Calculate software metrics using PHP_Depend and log result in XML format. Intended for usage within a continuous integration environment.">
         <exec executable="${pdepend.bin}" logoutput="true">
-            <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
-            <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
-            <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
-            <arg value="--dependency-xml=${basedir}/build/pdepend/dependencies.xml" />
-            <arg value="--summary-xml=${basedir}/build/pdepend/summary.xml" />
+            <arg value="--jdepend-xml=${pdepend.log.jdepend-xml}" />
+            <arg value="--jdepend-chart=${pdepend.log.jdepend-chart-svg}" />
+            <arg value="--overview-pyramid=${pdepend.log.pyramid-svg}" />
+            <arg value="--dependency-xml=${pdepend.log.dependency-xml}" />
+            <arg value="--summary-xml=${pdepend.log.summary-xml}" />
             <arg value="--ignore=${basedir}/tests" />
             <arg value="--configuration=${pdepend.configuration}" />
             <arg path="${basedir}/src" />
@@ -194,7 +212,7 @@ CakeDevTools standard Phing configuration file.
             <arg value="xml" />
             <arg path="${phpmd.configuration}" />
             <arg value="--reportfile" />
-            <arg path="${basedir}/build/logs/pmd.xml" />
+            <arg path="${phpmd.log.report-xml}" />
         </exec>
 
         <property name="phpmd.done" value="true"/>
@@ -232,15 +250,13 @@ CakeDevTools standard Phing configuration file.
         </exec>
         <exec executable="${phpcs.bin}" logoutput="true">
             <arg value="--report=checkstyle" />
-            <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
-            <arg value="--report-diff=${basedir}/build/logs/checkstyle.diff" />
+            <arg value="--report-file=${phpcs.log.report-checkstyle}" />
+            <arg value="--report-diff=${phpcs.log.report-diff}" />
             <arg value="--standard=CakePHP" />
             <arg value="--extensions=php" />
             <arg value="--ignore=autoload.php,*.bak.php,*/config/*,*/vendor/*,*/webroot/*" />
-            <!-- <arg value="-v" /> -->
             <arg path="${basedir}/src/*" />
             <!--
-            <arg path="${basedir}/plugins/*" />
             <arg path="${basedir}/tests/*" />
             -->
         </exec>
@@ -261,13 +277,8 @@ CakeDevTools standard Phing configuration file.
             <arg value="--standard=CakePHP" />
             <arg value="--extensions=php" />
             <arg value="--ignore=autoload.php,*.bak.php,*/config/*,*/vendor/*,*/webroot/*" />
-            <!-- <arg value="-v" /> -->
             <arg path="${basedir}/src/*" />
-            <!--
-            <arg path="${basedir}/plugins/*" />
             <arg path="${basedir}/tests/*" />
-            <arg path="${basedir}/plugins/*/src/*" />
-            -->
         </exec>
 
         <property name="phpcbf.done" value="true"/>
@@ -289,7 +300,7 @@ CakeDevTools standard Phing configuration file.
             depends="prepare"
             description="Find duplicate code using PHPCPD and log result in XML format. Intended for usage within a continuous integration environment.">
         <exec executable="${phpcpd.bin}" logoutput="true">
-            <arg value="--log-pmd=${basedir}/build/logs/pmd-cpd.xml" />
+            <arg value="--log-pmd=${phpcpd.log.pmd-xml}" />
             <arg path="${basedir}/src/*" />
         </exec>
 
@@ -307,18 +318,18 @@ CakeDevTools standard Phing configuration file.
             <arg path="${phpunit.configuration}"/>
             <arg line="${phpunit.args}" />
             <arg value="--coverage-clover"/>
-            <arg path="${basedir}/build/logs/clover.xml"/>
+            <arg path="${phpunit.log.coverage-clover}"/>
             <arg value="--coverage-crap4j"/>
-            <arg path="${basedir}/build/logs/crap4j.xml"/>
+            <arg path="${phpunit.log.coverage-crap4j}"/>
             <arg value="--coverage-html"/>
-            <arg path="${basedir}/build/coverage/html"/>
+            <arg path="${phpunit.log.coverage-html-dir}"/>
             <arg value="--coverage-xml"/>
-            <arg path="${basedir}/build/coverage/xml"/>
+            <arg path="${phpunit.log.coverage-xml-dir}"/>
             <arg value="--coverage-php"/>
-            <arg path="${basedir}/build/logs/phpunit.php"/>
-            <arg value="--coverage-text=${basedir}/build/logs/phpunit.txt"/>
+            <arg path="${phpunit.log.coverage-php}"/>
+            <arg value="--coverage-text=${phpunit.log.coverage-text}"/>
             <arg value="--log-junit"/>
-            <arg path="${basedir}/build/logs/junit.xml"/>
+            <arg path="${phpunit.log.junit}"/>
             <arg value="--do-not-cache-result"/>
             <arg line="${phpunit.args}" />
         </exec>
@@ -363,7 +374,7 @@ CakeDevTools standard Phing configuration file.
     <target name="phpstan-ci"
             unless="phpstan.done"
             description="Analyse code using PHPSTAN and and log result in XML format. Intended for usage within a continuous integration environment.">
-        <exec executable="${phpstan.bin}" logoutput="true" output="${basedir}/build/logs/phpstan.xml">
+        <exec executable="${phpstan.bin}" logoutput="true" output="${phpstan.log.xml}">
             <arg value="analyze" />
             <arg value="--no-progress" />
             <arg value="--error-format=checkstyle" />
