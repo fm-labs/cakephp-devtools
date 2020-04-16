@@ -24,11 +24,11 @@ CakeDev Tools Phing configuration v1.1.0
     <!-- PhpUnit properties -->
     <!-- property phpunit.args: PhpUnit args read from env variable 'PHPUNIT_ARGS' -->
     <property name="phpunit.args" value="${env.PHPUNIT_ARGS}" />
-    <property name="phpunit.configuration" value="${basedir}/phpunit.xml" />
+    <property name="phpunit.configuration" value="${basedir}/phpunit.xml.dist" />
 
     <!-- PhpDox properties -->
     <!-- property phpunit.args: PhpUnit args read from env variable 'PHPUNIT_ARGS' -->
-    <property name="phpdox.configuration" value="${basedir}/phpdox.xml" />
+    <property name="phpdox.configuration" value="${basedir}/phpdox.xml.dist" />
 
     <!-- Properties from file (optional) -->
     <property file="${basedir}/build.properties" quiet="true" override="true" />
