@@ -1,15 +1,15 @@
 # CakePHP devtools
 
-Common CakePHP developer tools in a bundle.
+Bundle of common CakePHP developer tools.
 
+The goal is to have a reusable build-environment for CakePHP applications and CakePHP plugins following CakePHP's philosophy of
+ 'convention-over-configuration'.
+ 
 This package is primarily a composer meta-package for common (Cake)PHP developer tools, like
 PHPUnit, phpcs, phpcbf, phpmd, phpcpd, phpstan.
 
 Instead of adding (and maintaining) all dev dependencies in each CakePHP project,
 this package bundles the dev tools and some helper scripts in a single meta package.
-
-The goal is to have a reusabe build-environment for CakePHP applications and CakePHP plugins following CakePHP's philosophy of
- 'convention-over-configuration'.
 
 ## Installation
 
@@ -174,9 +174,26 @@ Add Jenkins build step 'Invoke phing targets' and use following configuration:
 
 [ TODO ]
 
+# Hints
+
+## PhpUnit
+
+* ***Exclude code blocks from code coverage:***
+  Use the `@codecoverageIgnore`, `@codecoverageIgnoreStart`,
+ `@codecoverageIgnoreEnd` PHP annotations on classes, methods or lines.
+  Read more:
+  [PHPUnit Manual:Ignoring Code Blocks](https://phpunit.readthedocs.io/en/8.5/code-coverage-analysis.html#code-coverage-analysis-ignoring-code-blocks)
+
+## CodeSniffer
+
+* ***Exclude code blocks from code sniffing:***
+  Use the `//phpcs:disable` and `//phpcs:enable` comment lines around code you want to ignore.
+
 # Acknowledgements
 
-This project has been inspired by and built on-top of [jenkins-php.org](https://jenkins-php.org).
+This project has been inspired by ***jenkins-php***
+ ([Website](https://jenkins-php.org))
+ ([Github](https://github.com/sebastianbergmann/php-jenkins-template))
 
 ---
 
