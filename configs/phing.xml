@@ -3,11 +3,11 @@
 CakeDevTools standard Phing configuration file.
 -->
 <project name="project" default="info">
-    <!-- property env: Load environment values -->
+    <!-- env: Load environment values -->
     <property environment="env" />
-    <!-- property basedir: Base dir. MUST point to the project root directory. Defaults to ${project.basedir} -->
+    <!-- basedir: Base dir. MUST point to the project root directory. Defaults to ${project.basedir} -->
     <property name="basedir" value="${project.basedir}"/>
-    <!-- property devtools.configdir: Internal config location -->
+    <!-- devtools.configdir: Internal config location -->
     <property name="devtools.configdir" value="${project.basedir}" />
 
     <!-- Tools binary location properties -->
@@ -21,16 +21,20 @@ CakeDevTools standard Phing configuration file.
     <property name="phpunit.bin" value="${basedir}/vendor/bin/phpunit"/>
     <property name="phpstan.bin" value="${basedir}/vendor/bin/phpstan"/>
 
-    <!-- PhpUnit properties -->
-    <!-- property phpunit.args: PhpUnit args read from env variable 'PHPUNIT_ARGS' -->
+    <!-- phpunit.args: Additional command line arguments for phpunit -->
     <property name="phpunit.args" value="${env.PHPUNIT_ARGS}" />
+    <!-- phpunit.configuration: Path to phpunit configuration file. Defaults to config in basedir. -->
     <property name="phpunit.configuration" value="${basedir}/phpunit.xml.dist" />
-
-    <!-- PhpDox properties -->
-    <!-- property phpunit.args: PhpUnit args read from env variable 'PHPUNIT_ARGS' -->
+    <!-- phpdox.configuration: Path to phpdox configuration file. Defaults to config in basedir. -->
     <property name="phpdox.configuration" value="${basedir}/phpdox.xml.dist" />
-
-    <!-- Properties from file (optional) -->
+    <!-- phpmd.configuration: Path to phpmd configuration file. Defaults to shared config. -->
+    <property name="phpmd.configuration" value="${devtools.configdir}/phpmd.xml" />
+    <!-- pdepend.configuration: Path to pdepend configuration file. Defaults to shared config. -->
+    <property name="pdepend.configuration" value="${devtools.configdir}/pdepend.xml" />
+    <!-- phpstan.level: PHPStan analyze level -->
+    <property name="phpstan.level" value="6" />
+    
+    <!-- Load/Override properties from file -->
     <property file="${basedir}/build.properties" override="true" />
 
     <!-- INFO -->
@@ -161,7 +165,7 @@ CakeDevTools standard Phing configuration file.
             <arg value="--dependency-xml=${basedir}/build/pdepend/dependencies.xml" />
             <arg value="--summary-xml=${basedir}/build/pdepend/summary.xml" />
             <arg value="--ignore=${basedir}/tests" />
-            <arg value="--configuration=${devtools.configdir}/pdepend.xml" />
+            <arg value="--configuration=${pdepend.configuration}" />
             <arg path="${basedir}/src" />
         </exec>
 
@@ -175,7 +179,7 @@ CakeDevTools standard Phing configuration file.
         <exec executable="${phpmd.bin}" logoutput="true">
             <arg path="${basedir}/src" />
             <arg value="text" />
-            <arg path="${devtools.configdir}/phpmd.xml" />
+            <arg path="${phpmd.configuration}" />
         </exec>
 
         <property name="phpmd.done" value="true"/>
@@ -188,7 +192,7 @@ CakeDevTools standard Phing configuration file.
         <exec executable="${phpmd.bin}" logoutput="true">
             <arg value="${basedir}/src" />
             <arg value="xml" />
-            <arg path="${devtools.configdir}/phpmd.xml" />
+            <arg path="${phpmd.configuration}" />
             <arg value="--reportfile" />
             <arg path="${basedir}/build/logs/pmd.xml" />
         </exec>
