@@ -6,12 +6,10 @@
     "license": "MIT",
     "require": {
         "php": ">=7.2",
-        "cakephp/cakephp": "^4.0",
-        "cakephp/migrations": "^3.0",
-        "cakephp/plugin-installer": "^1.2",
         "cakephp/bake": "^2.0.3",
         "cakephp/cakephp-codesniffer": "~4.0.0",
         "cakephp/debug_kit": "^4.0",
+        "cakephp/migrations": "^3.0",
         "gourmet/whoops": "~1.0",
         "josegonzalez/dotenv": "^3.2",
         "pdepend/pdepend": "*",
