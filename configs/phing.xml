@@ -373,8 +373,7 @@ CakeDevTools standard Phing configuration file.
             description="Analyse code using PHPSTAN and and log result in XML format. Intended for usage within a continuous integration environment.">
         <exec executable="${phpstan.bin}" logoutput="true" output="${phpstan.log.xml}">
             <arg value="analyze" />
-            <arg value="--configuration="/>
-            <arg path="${phpstan.configuration}"/>
+            <arg value="--configuration=${phpstan.configuration}"/>
             <arg value="--no-progress" />
             <arg value="--no-interaction" />
             <arg value="--no-ansi" />
