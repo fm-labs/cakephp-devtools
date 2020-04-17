@@ -21,17 +21,13 @@ CakeDevTools standard Phing configuration file.
 
     <!-- phpunit.args: Additional command line arguments for phpunit -->
     <property name="phpunit.args" value="" />
-    <!-- phpunit.configuration: Path to phpunit configuration file. Defaults to config in basedir. -->
-    <property name="phpunit.configuration" value="${basedir}/phpunit.xml.dist" />
-    <!-- phpdox.configuration: Path to phpdox configuration file. Defaults to config in basedir. -->
-    <property name="phpdox.configuration" value="${basedir}/phpdox.xml.dist" />
-    <!-- phpmd.configuration: Path to phpmd configuration file. Defaults to shared config. -->
-    <property name="phpmd.configuration" value="${devtools.configdir}/phpmd.xml" />
-    <!-- pdepend.configuration: Path to pdepend configuration file. Defaults to shared config. -->
-    <property name="pdepend.configuration" value="${devtools.configdir}/pdepend.xml" />
-    <!-- phpstan.level: PHPStan analyze level -->
-    <property name="phpstan.level" value="6" />
-    <!-- Log file location properties -->
+    <!-- Configuration location properties -->
+    <property name="phpunit.configuration"          value="${basedir}/phpunit.xml.dist" />
+    <property name="phpdox.configuration"           value="${basedir}/phpdox.xml.dist" />
+    <property name="phpmd.configuration"            value="${devtools.configdir}/phpmd.xml" />
+    <property name="pdepend.configuration"          value="${devtools.configdir}/pdepend.xml" />
+    <property name="phpstan.configuration"          value="${devtools.configdir}/phpstan.neon" />
+    <!-- Log location properties -->
     <property name="phpunit.log.coverage-html-dir"  value="${basedir}/build/coverage/html" />
     <property name="phpunit.log.coverage-xml-dir"   value="${basedir}/build/coverage/xml" />
     <property name="phpunit.log.coverage-php"       value="${basedir}/build/logs/phpunit.php" />
@@ -364,6 +360,7 @@ CakeDevTools standard Phing configuration file.
             description="Analyse code using PHPSTAN and print human readable output. Intended for usage on the command line before committing.">
         <exec executable="${phpstan.bin}" logoutput="true">
             <arg value="analyze" />
+            <arg value="--configuration=${phpstan.configuration}"/>
             <arg path="${basedir}/src/" />
             <arg path="${basedir}/tests/" />
         </exec>
@@ -376,7 +373,12 @@ CakeDevTools standard Phing configuration file.
             description="Analyse code using PHPSTAN and and log result in XML format. Intended for usage within a continuous integration environment.">
         <exec executable="${phpstan.bin}" logoutput="true" output="${phpstan.log.xml}">
             <arg value="analyze" />
+            <arg value="--configuration="/>
+            <arg path="${phpstan.configuration}"/>
             <arg value="--no-progress" />
+            <arg value="--no-interaction" />
+            <arg value="--no-ansi" />
+            <arg value="--xdebug" /><!-- Turn off xdebug for better performance -->
             <arg value="--error-format=checkstyle" />
             <arg path="${basedir}/src/" />
             <arg path="${basedir}/tests/" />

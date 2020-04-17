@@ -1,0 +1,6 @@
+parameters:
+    level: 3
+    paths:
+        - %rootDir%/../../../src
+        - %rootDir%/../../../tests
+    checkMissingIterableValueType: false
