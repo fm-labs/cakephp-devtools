@@ -227,11 +227,8 @@ CakeDevTools standard Phing configuration file.
             <arg value="--standard=CakePHP" />
             <arg value="--extensions=php" />
             <arg value="--ignore=autoload.php" />
-            <!-- <arg value="-v" /> -->
             <arg path="${basedir}/src/*" />
-            <!--
             <arg path="${basedir}/tests/*" />
-            -->
         </exec>
 
         <property name="phpcs.done" value="true"/>
@@ -251,11 +248,8 @@ CakeDevTools standard Phing configuration file.
             <arg value="--report-diff=${phpcs.log.report-diff}" />
             <arg value="--standard=CakePHP" />
             <arg value="--extensions=php" />
-            <arg value="--ignore=autoload.php,*.bak.php,*/config/*,*/vendor/*,*/webroot/*" />
             <arg path="${basedir}/src/*" />
-            <!--
             <arg path="${basedir}/tests/*" />
-            -->
         </exec>
 
         <property name="phpcs.done" value="true"/>
@@ -273,7 +267,6 @@ CakeDevTools standard Phing configuration file.
             <arg value="-n" /> <!-- only errors -->
             <arg value="--standard=CakePHP" />
             <arg value="--extensions=php" />
-            <arg value="--ignore=autoload.php,*.bak.php,*/config/*,*/vendor/*,*/webroot/*" />
             <arg path="${basedir}/src/*" />
             <arg path="${basedir}/tests/*" />
         </exec>
