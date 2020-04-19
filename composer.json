@@ -6,6 +6,8 @@
     "license": "MIT",
     "require": {
         "php": ">=7.2",
+        "cakephp/bake": "^2.1.0",
+        "cakephp/debug_kit": "^4.0",
         "cakephp/cakephp-codesniffer": "~4.0.0",
         "gourmet/whoops": "~1.0",
         "josegonzalez/dotenv": "^3.2",
@@ -33,7 +35,5 @@
     "bin": ["bin/cakedev"],
     "config": {
         "sort-packages": true
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
