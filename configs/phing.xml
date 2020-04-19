@@ -92,6 +92,7 @@ CakeDevTools standard Phing configuration file.
             <phingcall target="phpcpd-ci"/>
             <phingcall target="phpcs-ci"/>
             <phingcall target="phploc-ci"/>
+            <phingcall target="phpstan-ci"/>
         </parallel>
     </target>
 

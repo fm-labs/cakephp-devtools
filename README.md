@@ -81,20 +81,20 @@ Add "scripts" to your `composer.json`
         "phpcpd": "cakedev phpcpd",
         "phploc": "cakedev phploc",
         "phpstan": "cakedev phpstan",
-        "quick-test": "cakedev quick-test",
-        "quick-build": "cakedev quick-build",
-        "full-build": "cakedev full-build",
-        "static-analysis": "cakedev static-analysis",
 
         // Aliases
         "check": [
             "@test",
             "@cs-check"
         ],
-        "cs-check": "@phpcs",
-        "cs-fix": "@phpcbf",
-        "stan": "@phpstan",
-        "test": "@phpunit",
+        "cs-check": "cakedev phpcs",
+        "cs-fix": "cakedev phpcbf",
+        "quick-test": "cakedev quick-test",
+        "test": "cakedev phpunit",
+        "stan": "cakedev phpstan",
+        "quick-build": "cakedev quick-build",
+        "full-build": "cakedev full-build",
+        "static-analysis": "cakedev static-analysis",
 
 
         // Alternative: Run tools directly
@@ -161,8 +161,8 @@ A build target is an alias for a series of build steps.
 | ***DOC GENERATOR*** |
 | phpdox | Generate project documentation using phpDox. Runs: phploc-ci, phpcs-ci, phpmd-ci |
 | ***ALIASES*** |
-| static-analysis | Runs: lint, phploc-ci, pdepend, phpmd-ci, phpcs-ci, phpcpd-ci |
-| static-analysis-parallel | Runs: lint, phploc-ci, pdepend, phpmd-ci, phpcs-ci, phpcpd-ci |
+| static-analysis | Runs: lint, phploc-ci, pdepend, phpmd-ci, phpcs-ci, phpcpd-ci, phpstan-ci |
+| static-analysis-parallel | Runs: lint, phploc-ci, pdepend, phpmd-ci, phpcs-ci, phpcpd-ci, phpstan-ci |
 | quick-test | Runs: phpunit-no-coverage | 
 | quick-build | Runs: lint, phpunit-no-coverage |
 | full-build | Runs: static-analysis, phpunit, phpdox |
