@@ -13,23 +13,14 @@ Instead of adding and maintaining all dev dependencies in each CakePHP project,
 this package bundles a common set of dev tools and some helper scripts.
 
 ## Installation
-
 ```
  # In your CakePHP project directory
-
- composer config minimum-stability dev
- composer config prefer-stable 1
  composer require --dev fm-labs/cakephp-devtools dev-master
 ```
 
-Note:
-The first 2 composer commands `composer config minimum-stability dev` and
-`config prefer-stable 1` are necessary because the
-CakePHP Migration plugin dependency (cakephp/migration) is not stable yet.
-
 ## Usage
-
 ### `bin/cakedev`
+Helper script to execute tool commands with shared configurations.
 
 ```
  $ ./vendor/bin/cakedev [BUILD-TARGET]

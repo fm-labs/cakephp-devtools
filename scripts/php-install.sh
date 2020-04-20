@@ -19,6 +19,9 @@ sudo apt install -y php${PHP_VERSION}-cli \
                   php${PHP_VERSION}-mbstring \
                   php${PHP_VERSION}-json
 
+# Image processing
+sudo apt install -y php${PHP_VERSION}-gd
+
 # Curl
 sudo apt install -y curl php-curl php${PHP_VERSION}-curl
 
