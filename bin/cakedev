@@ -2,42 +2,38 @@
 
 PWD=$(pwd)
 
-trap "{ cd $PWD ; exit 255; }" SIGINT SIGTERM EXIT
+trap '{ cd ${PWD} ; exit 255; }' SIGINT SIGTERM EXIT
 
 TARGET=$1
 WD=$2
 
 if [[ -z ${WD} ]]; then
-  WD=$PWD
-  echo "WD not defined. Fallback to $PWD"
+  WD=${PWD}
+  echo "WD not defined. Fallback to ${PWD}"
 fi
 
-if [[ -z $PHING ]]; then
-  PHING=${WD}/vendor/bin/phing
-  echo "PHING not defined. Fallback to $PHING"
+if [[ -z ${PHING} ]]; then
+  PHING="${WD}/vendor/bin/phing"
+  echo "PHING not defined. Fallback to ${PHING}"
 fi
 
-if [[ -z $PHINGFILE ]]; then
-  PHINGFILE=${WD}/vendor/fm-labs/cakephp-devtools/configs/phing.xml
-  echo "PHINGFILE not defined. Fallback to $PHINGFILE"
+if [[ -z ${PHINGFILE} ]]; then
+  PHINGFILE="${WD}/vendor/fm-labs/cakephp-devtools/configs/phing.xml"
+  echo "PHINGFILE not defined. Selecting default: ${PHINGFILE}"
 fi
 
-cd ${WD} || { echo "Failed to enter working directory"; exit 1; }
+cd "${WD}" || { echo "Failed to enter working directory"; exit 1; }
 
 case "${TARGET}" in
   "help"|"")
     echo "Usage: $0 [TARGET] [WORKING-DIR]"
     echo "Available phing targets:"
-    $PHING -Dbasedir=${WD} -f ${PHINGFILE} -list
+    $PHING -Dbasedir="${WD}" -f "${PHINGFILE}" -list
     exit 1
   ;;
 
-  "list")
-    $PHING -Dbasedir=${WD} -f ${PHINGFILE} -list
-  ;;
-
   *)
-    $PHING -Dbasedir=${WD} -f ${PHINGFILE} ${TARGET}
+    $PHING -Dbasedir="${WD}" -f "${PHINGFILE}" "${TARGET}"
   ;;
 esac
 
