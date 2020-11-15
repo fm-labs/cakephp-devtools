@@ -12,8 +12,10 @@ sudo apt install -y php${PHP_VERSION}-cli \
                   php${PHP_VERSION}-common \
                   php${PHP_VERSION}-intl \
                   php${PHP_VERSION}-mysql \
+                  php${PHP_VERSION}-pdo \
                   php${PHP_VERSION}-sqlite3 \
                   php${PHP_VERSION}-xml \
+                  php${PHP_VERSION}-xsl \
                   php${PHP_VERSION}-simplexml \
                   php${PHP_VERSION}-dom \
                   php${PHP_VERSION}-mbstring \
