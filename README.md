@@ -6,8 +6,8 @@ The goal is to have a reusable build-environment for CakePHP projects, following
  'convention-over-configuration'.
  
 This package is primarily a composer meta-package for common PHP developer tools, like
-`phpunit`, `phpcs`, `phpcbf`, `phpmd`, `phpcpd`, `phpstan`, `phploc`
-and CakePHP's own essential tools `debug_kit` and `bake`.
+`phpunit`, `phpcs`, `phpcbf`, `phpmd`, `phpstan`, ~~`phpcpd`~~, ~~`phploc`~~
+and CakePHP's own essential tools `debug_kit`, `bake` and `repl`.
 
 Instead of adding and maintaining all dev dependencies in each CakePHP project,
 this package bundles a common set of dev tools and some helper scripts.
@@ -64,13 +64,10 @@ Add "scripts" to your `composer.json`
         // (shared configs apply automatically)
         "phpunit": "cakedev phpunit",
         "phpunit-no-coverage": "cakedev phpunit-no-coverage",
-        "phpdox": "cakedev phpdox",
         "pdepend": "cakedev pdepend",
         "phpcbf": "cakedev phpcbf",
         "phpcs": "cakedev phpcs",
         "phpmd": "cakedev phpmd",
-        "phpcpd": "cakedev phpcpd",
-        "phploc": "cakedev phploc",
         "phpstan": "cakedev phpstan",
 
         // Aliases
@@ -126,63 +123,63 @@ $ ./vendor/bin/phpstan analyse src/
 A build target is an alias for a series of build steps.
 
 
-| Target    | Description    |
-| --- | :--- |
-| ***HELPERS*** |
-| info | Displays info |
-| prepare | Prepare build |
-| clean | Remove all existing build artifacts |
-| ***ANALYSE*** |
-| lint | Perform syntax check of sourcecode files |
-| phploc | Measure project size using PHPLOC and print human readable output. Intended for usage on the command line |
-| phploc-ci | Measure project size using PHPLOC and log result in CSV and XML format. Intended for usage within a continuous integration environment. |
-| pdepend | Calculate software metrics using PHP_Depend and log result in XML format. Intended for usage within a continuous integration environment. |
-| phpmd | Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing. |
-| phpmd-ci | Perform project mess detection using PHPMD and log result in XML format. Intended for usage within a continuous integration environment. |
-| phpcs | Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing. |
-| phpcs-ci | Find coding standard violations using PHP_CodeSniffer and log result in XML format. Intended for usage within a continuous integration environment. |
-| phpcbf | Automatically fix coding standard violations using PHP_CodeSniffer. | |
-| phpcpd | Find duplicate code using PHPCPD and print human readable output. Intended for usage on the command line before committing. |
-| phpcpd-ci | Find duplicate code using PHPCPD and log result in XML format. Intended for usage within a continuous integration environment. |
-| phpstan | Perform static analysis using PHPSTAN and print human readable output. Intended for usage on the command line before commiting. |
-| phpstan | Perform static analysis using PHPSTAN and log result in XML format. Intended for usage within a continuous integration environment. |
-| ***TEST*** |
-| phpunit | Run unit tests with PHPUnit |
-| phpunit-no-coverage | Run unit tests with PHPUnit (without generating code coverage reports) |
-| ***DOC GENERATOR*** |
-| phpdox | Generate project documentation using phpDox. Runs: phploc-ci, phpcs-ci, phpmd-ci |
-| ***ALIASES*** |
-| static-analysis | Runs: lint, phploc-ci, pdepend, phpmd-ci, phpcs-ci, phpcpd-ci, phpstan-ci |
-| static-analysis-parallel | Runs: lint, phploc-ci, pdepend, phpmd-ci, phpcs-ci, phpcpd-ci, phpstan-ci |
-| quick-test | Runs: phpunit-no-coverage | 
-| quick-build | Runs: lint, phpunit-no-coverage |
-| full-build | Runs: static-analysis, phpunit, phpdox |
-| full-build-parallel | Runs: static-analysis-parallel, phpunit, phpdox |
+| Target                   | Description                                                                                                                                         |
+|--------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------|
+| ***HELPERS***            |
+| info                     | Displays info                                                                                                                                       |
+| prepare                  | Prepare build                                                                                                                                       |
+| clean                    | Remove all existing build artifacts                                                                                                                 |
+| ***ANALYSE***            |
+| lint                     | Perform syntax check of sourcecode files                                                                                                            |
+| ~~phploc~~               | (Project abandoned) Measure project size using PHPLOC and print human readable output. Intended for usage on the command line                                           |
+| ~~phploc-ci~~            | (Project abandoned) Measure project size using PHPLOC and log result in CSV and XML format. Intended for usage within a continuous integration environment.             |
+| pdepend                  | Calculate software metrics using PHP_Depend and log result in XML format. Intended for usage within a continuous integration environment.           |
+| phpmd                    | Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.               |
+| phpmd-ci                 | Perform project mess detection using PHPMD and log result in XML format. Intended for usage within a continuous integration environment.            |
+| phpcs                    | Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.    |
+| phpcs-ci                 | Find coding standard violations using PHP_CodeSniffer and log result in XML format. Intended for usage within a continuous integration environment. |
+| phpcbf                   | Automatically fix coding standard violations using PHP_CodeSniffer.                                                                                 | |
+| ~~phpcpd~~               | (Project abandoned) Find duplicate code using PHPCPD and print human readable output. Intended for usage on the command line before committing.     |
+| ~~phpcpd-ci~~            |(Project abandoned)  Find duplicate code using PHPCPD and log result in XML format. Intended for usage within a continuous integration environment.                      |
+| phpstan                  | Perform static analysis using PHPSTAN and print human readable output. Intended for usage on the command line before commiting.                     |
+| phpstan                  | Perform static analysis using PHPSTAN and log result in XML format. Intended for usage within a continuous integration environment.                 |
+| ***TEST***               |
+| phpunit                  | Run unit tests with PHPUnit                                                                                                                         |
+| phpunit-no-coverage      | Run unit tests with PHPUnit (without generating code coverage reports)                                                                              |
+| ***DOC GENERATOR***      |
+| phpdox                   | Generate project documentation using phpDox. Runs: phploc-ci, phpcs-ci, phpmd-ci                                                                    |
+| ***ALIASES***            |
+| static-analysis          | Runs: lint, phploc-ci, pdepend, phpmd-ci, phpcs-ci, phpcpd-ci, phpstan-ci                                                                           |
+| static-analysis-parallel | Runs: lint, phploc-ci, pdepend, phpmd-ci, phpcs-ci, phpcpd-ci, phpstan-ci                                                                           |
+| quick-test               | Runs: phpunit-no-coverage                                                                                                                           | 
+| quick-build              | Runs: lint, phpunit-no-coverage                                                                                                                     |
+| full-build               | Runs: static-analysis, phpunit, phpdox                                                                                                              |
+| full-build-parallel      | Runs: static-analysis-parallel, phpunit, phpdox                                                                                                     |
 
 
 ## Reports
 
-| Tool   | Report    | Format    | Description     |
-| ---    | ---       | ---       | ---    |
-| phploc | logs/phploc.csv | csv |
-| phploc | logs/phploc.xml | xml |
-| phpunit | logs/crap4j.xml | xml | Coverage Crap4j format |
-| phpunit | logs/clover.xml | xml | Coverage Clover format |
-| phpunit | logs/phpunit.php | php | Coverage PHP format |
-| phpunit | logs/phpunit.txt| txt | Coverage TXT format |
-| phpunit | coverage/html | directory | Coverage HTML format |
-| phpunit | coverage/xml | directory | Coverage XML format |
-| phpunit | logs/junit.xml | xml | Test results JUNIT format |
-| phpcs | logs/checkstyle.xml | xml | Checkstyle XML |
-| phpcs | logs/checkstyle.diff | diff | DIFF format |
-| phpmd | logs/pmd.xml | xml | |
-| phpcpd | logs/pmd-cpd.xml | xml | PMD XML format |
-| phpstan | logs/phpstan.xml | xml | |
-| pdepend | logs/jdepend.xml | xml | Jdepend XML format |
-| pdepend | pdepend/dependencies.svg | svg | Jdepend Chart Image |
-| pdepend | pdepend/overview-pyramid.svg | svg | Jdepend Pyramid Image |
-| pdepend | pdepend/dependencies.xml | xml | Jdepend Dependencies XML |
-| pdepend | pdepend/summary.xml | xml | Jdepend Summary XML |
+| Tool       | Report    | Format    | Description     |
+|------------| ---       | ---       | ---    |
+| ~~phploc~~ | logs/phploc.csv | csv |
+| ~~phploc~~ | logs/phploc.xml | xml |
+| phpunit    | logs/crap4j.xml | xml | Coverage Crap4j format |
+| phpunit    | logs/clover.xml | xml | Coverage Clover format |
+| phpunit    | logs/phpunit.php | php | Coverage PHP format |
+| phpunit    | logs/phpunit.txt| txt | Coverage TXT format |
+| phpunit    | coverage/html | directory | Coverage HTML format |
+| phpunit    | coverage/xml | directory | Coverage XML format |
+| phpunit    | logs/junit.xml | xml | Test results JUNIT format |
+| phpcs      | logs/checkstyle.xml | xml | Checkstyle XML |
+| phpcs      | logs/checkstyle.diff | diff | DIFF format |
+| phpmd      | logs/pmd.xml | xml | |
+| ~~phpcpd~~ | logs/pmd-cpd.xml | xml | PMD XML format |
+| phpstan    | logs/phpstan.xml | xml | |
+| pdepend    | logs/jdepend.xml | xml | Jdepend XML format |
+| pdepend    | pdepend/dependencies.svg | svg | Jdepend Chart Image |
+| pdepend    | pdepend/overview-pyramid.svg | svg | Jdepend Pyramid Image |
+| pdepend    | pdepend/dependencies.xml | xml | Jdepend Dependencies XML |
+| pdepend    | pdepend/summary.xml | xml | Jdepend Summary XML |
 
 ## Phing Properties
 

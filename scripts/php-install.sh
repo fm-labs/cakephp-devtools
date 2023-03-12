@@ -3,8 +3,8 @@
 PHP_VERSION=$1
 
 if [[ -z ${PHP_VERSION} ]]; then
-   echo "No php version selected. Selecting/ PHP version 7.2 by default"
-   PHP_VERSION="7.2"
+   echo "No php version selected. Selecting/ PHP version 7.4 by default"
+   PHP_VERSION="7.4"
 fi
 
 # Basic

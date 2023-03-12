@@ -61,11 +61,11 @@ CakeDevTools standard Phing configuration file.
     </target>
 
     <target name="full-build"
-            depends="prepare,static-analysis,phpunit,-check-failure"
+            depends="prepare,static-analysis,phpunit,phpdox,-check-failure"
             description="Performs static analysis, runs the tests, and generates project documentation"/>
 
     <target name="full-build-parallel"
-            depends="prepare,static-analysis-parallel,phpunit,-check-failure"
+            depends="prepare,static-analysis-parallel,phpunit,phpdox,-check-failure"
             description="Performs static analysis (executing the tools in parallel), runs the tests, and generates project documentation"/>
 
     <target name="quick-build"
@@ -77,7 +77,7 @@ CakeDevTools standard Phing configuration file.
             description="Runs the tests (without generating code coverage reports)"/>
 
     <target name="static-analysis"
-            depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpstan-ci"
+            depends="lint,phploc-ci,pdepend,phpmd-ci,phpcs-ci,phpcpd-ci,phpstan-ci"
             description="Performs static analysis" />
 
     <!-- Adjust the threadCount attribute's value to the number of CPUs -->
@@ -89,7 +89,9 @@ CakeDevTools standard Phing configuration file.
                 <phingcall target="phpmd-ci"/>
             </sequential>
             <phingcall target="lint"/>
+            <phingcall target="phpcpd-ci"/>
             <phingcall target="phpcs-ci"/>
+            <phingcall target="phploc-ci"/>
             <phingcall target="phpstan-ci"/>
         </parallel>
     </target>
