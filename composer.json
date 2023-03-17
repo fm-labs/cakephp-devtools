@@ -28,9 +28,7 @@
     "autoload-dev": {
         "psr-4": {}
     },
-    "scripts": {
-        "post-autoload-dump": "Cake\\Composer\\Installer\\PluginInstaller::postAutoloadDump"
-    },
+    "scripts": {},
     "bin": ["bin/cakedev"],
     "config": {
         "sort-packages": true,
