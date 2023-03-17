@@ -5,11 +5,14 @@
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": ">=7.4",
+        "php": ">=7.4"
+    },
+    "require-dev": {
         "cakephp/bake": "^2",
         "cakephp/cakephp-codesniffer": "^5",
         "cakephp/debug_kit": "^4.0",
         "cakephp/migrations": "@stable",
+        "cakephp/repl": "@stable",
         "josegonzalez/dotenv": "^3.2",
         "pdepend/pdepend": "@stable",
         "phing/phing": "2.*",
@@ -18,10 +21,8 @@
         "phpunit/phpunit": "~8.5.0 || ^9.3",
         "psy/psysh": "@stable",
         "squizlabs/php_codesniffer": "3.*",
-        "dereuromark/cakephp-ide-helper": "@stable",
-        "cakephp/repl": "@stable"
+        "dereuromark/cakephp-ide-helper": "@stable"
     },
-    "require-dev": {},
     "autoload": {
         "psr-4": {}
     },
