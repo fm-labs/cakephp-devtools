@@ -1,5 +1,12 @@
 # CakePHP devtools
 
+**! THIS PACKAGE IS FOR CAKEPHP 4 !**
+
+[![Build Status](https://travis-ci.org/fm-labs/cakephp-devtools.svg?branch=master)](https://travis-ci.org/fm-labs/cakephp-devtools)
+[![Latest Stable Version](https://poser.pugx.org/fm-labs/cakephp-devtools/v/stable.svg)](https://packagist.org/packages/fm-labs/cakephp-devtools)
+[![Total Downloads](https://poser.pugx.org/fm-labs/cakephp-devtools/downloads.svg)](https://packagist.org/packages/fm-labs/cakephp-devtools)
+[![License](https://poser.pugx.org/fm-labs/cakephp-devtools/license.svg)](https://packagist.org/packages/fm-labs/cakephp-devtools)
+
 Bundle of common CakePHP developer tools.
 
 The goal is to have a reusable build-environment for CakePHP projects, following CakePHP's philosophy of
@@ -12,48 +19,41 @@ and CakePHP's own essential tools `debug_kit`, `bake` and `repl`.
 Instead of adding and maintaining all dev dependencies in each CakePHP project,
 this package bundles a common set of dev tools and some helper scripts.
 
+
 ## Installation
 ```
- # In your CakePHP project directory
- composer require --dev fm-labs/cakephp-devtools dev-master
+# In your CakePHP project directory
+composer require fm-labs/cakephp-devtools:^4
 ```
+
 
 ## Usage
-### `bin/cakedev`
-Helper script to execute tool commands with shared configurations.
+
+### CLI usage
+
+Helper tool to execute commands with shared configurations.
 
 ```
- $ ./vendor/bin/cakedev [BUILD-TARGET]
+ $ cakedev [BUILD-TARGET]
  
  // Examples
  // List available build targets
- $ ./vendor/bin/cakedev list
+ $ cakedev list
 
  // Run PHPUnit
- $ ./vendor/bin/cakedev phpunit
+ $ cakedev phpunit
 
  // Run PHPUnit without coverage
- $ ./vendor/bin/cakedev phpunit-no-coverage
+ $ cakedev phpunit-no-coverage
  
  // Run PHPStan
- $ ./vendor/bin/cakedev phpstan
+ $ cakedev phpstan
 
  // ... see full build target list below ...
 ``` 
 
-### `vendor/bin/phing`
+### Add scripts to your `composer.json`
 
-Under the hood all build targets will be executed using `phing` .
-The phing configuration file is located at `configs/phing.xml` .
-
-```
- // Phing command
- $ ./vendor/bin/phing -Dbasedir=$(pwd) -f ./vendor/fm-labs/cakephp-devtools/configs/phing.xml [BUILD-TARGET]
-```
-
-### `composer run`
-
-Add "scripts" to your `composer.json`
 
 ```
 // Example scripts in composer.json
@@ -87,14 +87,10 @@ Add "scripts" to your `composer.json`
 
         // Alternative: Run tools directly
         // (shared configs do not apply)
-        "check": [
-            "@test",
-            "@cs-check"
-        ],
-        "cs-check": "phpcs --colors -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/",
-        "cs-fix": "phpcbf --colors --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/",
-        "stan": "phpstan analyse src/",
-        "test": "phpunit --colors=always tests/",
+        // "cs-check": "phpcs --colors -p --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/",
+        // "cs-fix": "phpcbf --colors --standard=vendor/cakephp/cakephp-codesniffer/CakePHP src/ tests/",
+        // "stan": "phpstan analyse src/",
+        // "test": "phpunit --colors=always tests/",
     },
 }
 ```
@@ -106,17 +102,6 @@ Add "scripts" to your `composer.json`
 $ composer run check
 ```
 
-### Direct tool usage
-
-Any tool can also be used directly from the `vendor/bin` directory,
-naturally the shared devtools configurations won't apply automatically. 
-
-```
-# Example:
-$ ./vendor/bin/phpunit --no-coverage
-$ ./vendor/bin/phpstan analyse src/
-...
-```
 
 ### Build Targets
 
@@ -181,7 +166,18 @@ A build target is an alias for a series of build steps.
 | pdepend    | pdepend/dependencies.xml | xml | Jdepend Dependencies XML |
 | pdepend    | pdepend/summary.xml | xml | Jdepend Summary XML |
 
-## Phing Properties
+
+## Phing
+
+Under the hood all build targets will be executed using `phing` .
+The phing configuration file is located at `configs/phing.xml` .
+
+```
+ // Phing command
+ $ ./vendor/bin/phing -Dbasedir=$(pwd) -f ./vendor/fm-labs/cakephp-devtools/configs/phing.xml [BUILD-TARGET]
+```
+
+### Phing Properties
 
 ```
 <!-- Tools binary location properties -->
@@ -236,92 +232,6 @@ phpunit.args=--exclude-group someTestGroupName
 phpstan.configuration=/my/custom/config/path/phpstan.neon
 ```
 
-## Usage with Jenkins CI
-
-### Jenkins Project Configuration
-
-#### General: Description
-To display `pdepend` generated graphics in project overview add following
-HTML snippet to the project description.
-```html
-<a href="ws/artifacts/pdepend/overview-pyramid.svg" target="_blank">
-  <img type="image/svg+xml" src="ws/build/pdepend/overview-pyramid.svg" alt="Pdepend pyramid" width="500" />
-</a>
-<a href="ws/artifacts/pdepend/dependencies.svg" target="_blank">
-  <img type="image/svg+xml" src="ws/build/pdepend/dependencies.svg" alt="Pdepend dependencies" width="500" />  
-</a>
-```
-
-#### Build Step: Execute Shell 
-Example shell build step to prepare the build environment.
-```shell
-#!/bin/bash
-
-# Github pubkey authentication for checking out private repos
-# Before use:
-# * Generate SSH-Keypair (store eg. in /var/lib/jenkins/.ssh/jenkins)
-# * Register public key in your Github-Account
-# More Information:
-# https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh
-# https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
-#
-# Start the ssh-agent in the background.
-#eval "$(ssh-agent -s)"
-# Add your SSH private key to ssh-agent
-#ssh-add /var/lib/jenkins/.ssh/jenkins
-
-# Load devtools on-the-fly via composer
-# (not necessary if devtools are already defined in composer.json as a dependency)
-#composer config minimum-stability dev
-#composer config prefer-stable 1
-#composer require --dev fm-labs/cakephp-devtools dev-master
-
-# Install composer dependencies
-composer install --no-interaction --no-suggest --no-progress --no-ansi
-#composer update --no-interaction --no-suggest --no-progress --no-ansi
-
-# Create a test database
-#mysql -u root -proot -e 'CREATE DATABASE IF NOT EXISTS cakephp_test';
-
-# Define test database connection for CakePHP
-#export DB_DSN=mysql://root:root@127.0.0.1/cakephp_test
-
-# Create custom configuration file for CakePHP
-#cat > $WORKSPACE/config/app_local.php <<'CONFIG'
-#<?php
-#return [ /* ... config => here ... */ ];
-#CONFIG
-
-# Create custom build properties file for phing
-#cat > $WORKSPACE/build.properties <<'BUILD'
-#phpunit.args=--exclude-group integration
-#BUILD
-
-# Execute a phing build target manually
-# Recommendation: use the Jenkins build step 'Invoke phing targets' instead
-# a) via cakedev
-#./vendor/bin/cakedev full-build
-# b) via phing
-#./vendor/bin/phing \
-#    -Dbasedir=$(pwd) \
-#    -f ./vendor/fm-labs/cakephp-devtools/configs/phing.xml \
-#    -propertyfile ./build.properties \
-#    full-build
-```
-
-#### Build step: Invoke phing targets
-Add Jenkins build step 'Invoke phing targets' and use following configuration:
-
-* Phing Version: any
-* Targets: [target] (See target list)
-* Phing Build File: $WORKSPACE/vendor/fm-labs/cakephp-devtools/configs/phing.xml
-* Options: 
-* Properties: basedir=$WORKSPACE
-* Use ModuleRoot as working directory: yes
-
-### Post-Build Actions
-
-[ TODO ]
 
 # Hints
 
@@ -341,13 +251,35 @@ Add Jenkins build step 'Invoke phing targets' and use following configuration:
 * ***Exclude files from code sniffing:***
   Use the `//phpcs:ignoreFile` comment line at the top of the excluded file.
 
-# Acknowledgements
-
-This project has been inspired by ***jenkins-php***
- ([Website](https://jenkins-php.org))
- ([Github](https://github.com/sebastianbergmann/php-jenkins-template))
 
 ---
 
-Copyright (c) 2020 fm-labs |
+## License
+
+This is free and unencumbered software released into the public domain.
+
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
+
+In jurisdictions that recognize copyright laws, the author or authors
+of this software dedicate any and all copyright interest in the
+software to the public domain. We make this dedication for the benefit
+of the public at large and to the detriment of our heirs and
+successors. We intend this dedication to be an overt act of
+relinquishment in perpetuity of all present and future rights to this
+software under copyright law.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+For more information, please refer to <https://unlicense.org>
+
+
 [LICENSE](LICENSE)
