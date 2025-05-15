@@ -1,6 +1,10 @@
 # CakePHP devtools
 
-**! THIS PACKAGE IS FOR CAKEPHP 4 !**
+**! THIS PACKAGE IS FOR CAKEPHP 5 !**
+
+For CakePHP4 use the 4.x branch of this repository
+
+---
 
 [![Build Status](https://travis-ci.org/fm-labs/cakephp-devtools.svg?branch=master)](https://travis-ci.org/fm-labs/cakephp-devtools)
 [![Latest Stable Version](https://poser.pugx.org/fm-labs/cakephp-devtools/v/stable.svg)](https://packagist.org/packages/fm-labs/cakephp-devtools)
@@ -23,7 +27,7 @@ this package bundles a common set of dev tools and some helper scripts.
 ## Installation
 ```
 # In your CakePHP project directory
-composer require fm-labs/cakephp-devtools:^4
+composer require fm-labs/cakephp-devtools:^5
 ```
 
 
